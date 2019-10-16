@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sort"
 	"strconv"
@@ -149,7 +150,7 @@ func (f *TextFormatter) Format(entry *Entry) ([]byte, error) {
 			funcVal, fileVal = f.CallerPrettyfier(entry.Caller)
 		} else {
 			funcVal = entry.Caller.Function
-			fileVal = fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line)
+			fileVal = fmt.Sprintf("%s:%d", filepath.Base(entry.Caller.File), entry.Caller.Line)
 		}
 
 		if funcVal != "" {

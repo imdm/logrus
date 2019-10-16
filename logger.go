@@ -28,6 +28,7 @@ type Logger struct {
 
 	// Flag for whether to log caller info (off by default)
 	ReportCaller bool
+	CallDepth    int
 
 	// The logging level the logger should log at. This is typically (and defaults
 	// to) `logrus.Info`, which allows Info(), Warn(), Error() and Fatal() to be
@@ -84,6 +85,7 @@ func New() *Logger {
 		Level:        InfoLevel,
 		ExitFunc:     os.Exit,
 		ReportCaller: false,
+		CallDepth:    1,
 	}
 }
 

@@ -163,6 +163,16 @@ func getPackageName(f string) string {
 	return f
 }
 
+func (entry *Entry)getCaller() *runtime.Frame {
+	rpc := make([]uintptr, 1)
+	n := runtime.Callers(entry.Logger.CallDepth+4, rpc[:])
+	if n < 1 {
+		return nil
+	}
+	frame, _ := runtime.CallersFrames(rpc).Next()
+	return &frame
+}
+
 // getCaller retrieves the name of the first non-logrus calling function
 func getCaller() *runtime.Frame {
 
@@ -218,7 +228,8 @@ func (entry Entry) log(level Level, msg string) {
 	entry.Level = level
 	entry.Message = msg
 	if entry.Logger.ReportCaller {
-		entry.Caller = getCaller()
+		//entry.Caller = getCaller()
+		entry.Caller = entry.getCaller()
 	}
 
 	entry.fireHooks()
