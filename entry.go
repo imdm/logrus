@@ -165,7 +165,7 @@ func getPackageName(f string) string {
 
 func (entry *Entry)getCaller() *runtime.Frame {
 	rpc := make([]uintptr, 1)
-	n := runtime.Callers(entry.Logger.CallDepth+2, rpc[:])
+	n := runtime.Callers(entry.Logger.CallDepth+4, rpc[:])
 	if n < 1 {
 		return nil
 	}

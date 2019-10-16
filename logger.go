@@ -306,6 +306,13 @@ func (logger *Logger) SetLevel(level Level) {
 	atomic.StoreUint32((*uint32)(&logger.Level), uint32(level))
 }
 
+// SetLevel sets the logger level.
+func (logger *Logger) SetCallDepth(depth int) {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	logger.CallDepth = depth
+}
+
 // GetLevel returns the logger level.
 func (logger *Logger) GetLevel() Level {
 	return logger.level()
