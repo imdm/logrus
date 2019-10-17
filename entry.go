@@ -164,13 +164,18 @@ func getPackageName(f string) string {
 }
 
 func getCallerByDepth(depth int) *runtime.Frame {
-	rpc := make([]uintptr, 1)
-	n := runtime.Callers(depth+4, rpc[:])
-	if n < 1 {
+	pc, file, line, ok := runtime.Caller(depth)
+	if !ok {
 		return nil
 	}
-	frame, _ := runtime.CallersFrames(rpc).Next()
-	return &frame
+	return &runtime.Frame{
+		PC:       pc,
+		Func:     nil,
+		Function: "",
+		File:     file,
+		Line:     line,
+		Entry:    0,
+	}
 }
 
 // getCaller retrieves the name of the first non-logrus calling function
