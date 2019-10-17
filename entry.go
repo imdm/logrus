@@ -163,9 +163,9 @@ func getPackageName(f string) string {
 	return f
 }
 
-func (entry *Entry)getCaller() *runtime.Frame {
+func getCallerByDepth(depth int) *runtime.Frame {
 	rpc := make([]uintptr, 1)
-	n := runtime.Callers(entry.Logger.CallDepth+4, rpc[:])
+	n := runtime.Callers(depth+4, rpc[:])
 	if n < 1 {
 		return nil
 	}
@@ -229,7 +229,7 @@ func (entry Entry) log(level Level, msg string) {
 	entry.Message = msg
 	if entry.Logger.ReportCaller {
 		//entry.Caller = getCaller()
-		entry.Caller = entry.getCaller()
+		entry.Caller = getCallerByDepth(entry.Logger.CallDepth)
 	}
 
 	entry.fireHooks()
